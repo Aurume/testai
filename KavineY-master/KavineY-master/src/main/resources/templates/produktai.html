@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Produktai</title>
+    <meta charset="utf-8">
+		<style>
+			.anuliuotas, .sanuliuotas {
+				background-color: lightblue;
+			}
+			.ivykdytas, .sivykdytas {
+				background-color: lightgreen;
+			}
+		</style>
+	    <script
+		src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+		crossorigin="anonymous">
+	    </script>
+	    <script>
+		$(document).ready ( function() {
+					
+		pasiimtiUzsakymus();
+		
+		function keistiBusena( id, busena) {
+		
+			params_str = 'id=' + id + '&busena=' + busena;  
+		
+			$.ajax(
+				{
+					url: "http://localhost:8080/restfull/changestatus?" + params_str
+				}
+			)
+			.done( function( data ) {
+				
+				alert ( data );
+				pasiimtiUzsakymus();
+			});			
+		
+		}
+		
+		function pasiimtiUzsakymus() {
+		
+			$.ajax(
+				{
+					url: "http://localhost:8080/restfull/all" 
+															/*
+															, beforeSend: function( xhr ) {
+																xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
+															}
+															*/
+				}
+			)
+			.done(
+					function( data ) {
+															// alert ( 'jquery ok ' + data );
+						res_str = '<table>'
+								+ '<tr><th rowspan="2">id</th><th rowspan="2">pav</th><th colspan="2">matavimo</th></tr>'
+								+ '<tr><th>vnt</th><th>kiekis</th><th>kaina</th><th>kiekis_sand</th></tr>';
+						
+						for ( i = 0; i < data.length; i++) {
+						
+							res_str += '<tr class="s' + data [ i ].busena  + '" data-id="' + data [ i ].id  +'" >'
+								+ '<td>' + data [ i ].id + '</td>' 
+								+ '<td>' + data [ i ].pav + '</td>'
+								+ '<td>' + data [ i ].mat_vnt + '</td>'
+								+ '<td>' + data [ i ].mat_kiek + '</td>'
+								+ '<td>' + data [ i ].kaina + '</td>'
+								+ '<td>' + data [ i ].kiekis_sand + '</td>'
+								;
+							if ( data [ i ].busena == 'uzsakytas' ) {	
+							
+								res_str +=
+								
+									'<td><input type="button" class="anuliuotas" value="anuliuotas"></td>'
+									+ '<td><input type="button" class="ivykdytas" value="įvykdytas"></td>'
+							}
+							res_str += '</tr>';
+						}
+						
+						res_str += '</table>'
+						$( '#uzsakymai' ).html ( res_str );
+						
+						$( '.anuliuotas' ).on ( 'click', function() {
+						
+							$( this ).each ( function() {
+								
+								id_uzsakymo = $( this ).parent( ).parent().data ( 'id' );
+
+								keistiBusena ( id_uzsakymo, 'anuliuotas' );
+							});
+						});
+						
+						$( '.ivykdytas' ).on ( 'click', function() {
+						
+							$( this ).each ( function() {
+								
+								id_uzsakymo = $( this ).parent( ).parent().data ( 'id' );
+
+								keistiBusena ( id_uzsakymo, 'ivykdytas' );
+							});
+						});
+					}
+			);		
+		}
+		
+		$( '#uzsakymai' ).click( function() {
+		
+			alert ( 'vykdomas ' );
+		
+			uzsakymas = {
+				
+				pav: $( '#pav' ).val()
+				, trukme_ruosimo: parseInt ( $( '#trukme_ruosimo' ).val() )
+				, trukme_kaitinimo: parseInt ( $( '#trukme_kaitinimo' ).val() )
+			}
+			
+		/*$( '#uzsakymai' ).click( function() {
+		
+			alert ( 'pridedamas' );
+		
+			uzsakymas = {
+				
+				pav: $( '#pav' ).val()
+			
+				, mat_vnt: parseInt ( $( '#mat_vnt' ).val() )
+				, mat_kiek: parseInt ( $( '#mat_kiek' ).val() )
+				, kaina: parseInt ( $( '#kaina' ).val() )
+				, kiekis_sand: parseInt( $( '#kiekis_sand' ).val() )
+				*/
+				
+			//}
+			// alert ( 'uzsakymas  ' + uzsakymas.pav + ' ' );
+			
+			params_str = 
+				"pav="  + uzsakymas.pav 
+				+ '&trukme_ruosimo=' + uzsakymas.trukme_ruosimo 
+				+ '&trukme_kaitinimo=' + uzsakymas.trukme_kaitinimo 
+			
+			/*
+			params_str = 
+				"pav="  + produktas.pav 
+				+ '&mat_vnt=' + produktas.mat_vnt 
+				+ '&mat_kiek=' + produktas.mat_kiek
+				+ '&kaina=' + produktas.kaina
+				+ '&kiekis_sand' + produktas.kiekis_sand
+				//pasitikrinti cia, speju klaidingai parasiau.....
+				*/
+			}	
+			alert ( "http://localhost:8080/restfull/add?" + params_str );
+				
+			$.ajax(
+				{
+					url: "http://localhost:8080/restfull/add?" + params_str
+				}
+			)
+			.done( function( data ) {
+				
+				alert ( data );
+				pasiimtiUzsakymus();
+			
+			});
+		});
+		} );
+	});	
+	    </script>
+</head>
+<body>
+	<form action="">
+		pavadinimas<br>
+		<input type="text" id="pav" value=""><br><br>
+		mat_vnt<br>
+		<input type="text" id="mat_vnt" value=""><br><br>
+		mat_kiek<br>
+		<input type="text" id="mat_kiek" value=""><br><br>
+		kaina<br>
+		<input type="text" id="kaina" value=""><br><br>
+		kiekis_sand<br>
+		<input type="text" id="kiekis" value=""><br><br>
+		
+		<input type="button" id="naujasProduktas" value="prideti">
+	</form>
+	<div id="produktas">
+	</div>
+</body>
+</html>

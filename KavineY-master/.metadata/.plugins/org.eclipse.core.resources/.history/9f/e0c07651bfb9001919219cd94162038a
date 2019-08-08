@@ -1,0 +1,24 @@
+package kaviney;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
+
+import kaviney.Produktai;
+
+public class ProduktasMapper implements RowMapper<Produktai>  {
+	
+   public Produktai mapRow(ResultSet rs, int rowNum) throws SQLException {
+	   
+      Produktas produktai = new Produktas();
+      produktai.setId(rs.getInt("id"));
+      produktai.setPav(rs.getString("pav"));
+      produktai.setMat_vnt(rs.getString("mat_vnt"));
+      produktai.setMat_kiek(rs.getInt("mat_kiek"));
+      //uzsakymas.setBusena( rs.getString("busena") );
+      produktai.setKaina(rs.getDouble("kaina"));
+      produktai.setKiekis_sand(rs.getDouble("kiekis_sand"));
+      
+	return produktas;
+   }
+}	
+	

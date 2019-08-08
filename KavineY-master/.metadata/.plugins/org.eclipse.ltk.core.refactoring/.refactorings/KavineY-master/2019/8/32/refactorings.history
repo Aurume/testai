@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;kaviney.produktai&apos; to &apos;Produktai&apos;&#x0D;&#x0A;- Original project: &apos;KavineY-master&apos;&#x0D;&#x0A;- Original element: &apos;kaviney.produktai&apos;&#x0D;&#x0A;- Renamed element: &apos;kaviney.Produktai&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;produktai&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src\/main\/java&lt;kaviney{produktai.java[produktai" matchStrategy="1" name="Produktai" qualified="false" references="true" similarDeclarations="false" stamp="1565247737073" textual="false" version="1.0"/>
+</session>
